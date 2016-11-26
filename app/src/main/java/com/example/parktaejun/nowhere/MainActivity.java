@@ -14,20 +14,29 @@ import android.widget.EditText;
 
 public class MainActivity extends Activity {
 
-    private WebView WebView;
-    private Button button;
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startActivity(new Intent(this,SplashActivity.class));
-        WebView WebView = (WebView) findViewById(R.id.webView);
-        WebView.setWebViewClient(new WebViewClient());
 
-        WebSettings webSettings = WebView.getSettings();
+        startActivity(new Intent(this,SplashActivity.class)); //스플래쉬
+
+        WebView webView = (WebView) findViewById(R.id.webView);
+        webView.setWebViewClient(new WebClient()); // 응용프로그램에서 직접 url 처리
+
+        WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setBuiltInZoomControls(true);
 
-        WebView.loadUrl("http://iwin247.net:7727");
+        webView.loadUrl("http://iwin247.net:7727");
+    }
+
+    class WebClient extends WebViewClient {
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
     }
 }
